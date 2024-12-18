@@ -1,9 +1,9 @@
-@extends('new.layout')
+@extends('frontend.layout')
 
 @section('content')
 
 
-    <div class="breacrumb-section">
+    <div class="breacrumb-section banner">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

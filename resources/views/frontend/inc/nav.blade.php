@@ -5,7 +5,23 @@
             <p>خصم إضافي 10% على طلبك! كود خصم: BF10</p>
         </div>
         <div class="left">
-            <span class="user" href="" id="user-open">حسابى</span>
+            @auth
+                @if (isAdmin())
+                    <a href="{{ route('admin.dashboard') }}"><i
+                        class="fa fa-user"></i>{{ __('لوحة التحكم') }}</a>
+                @else
+                    <div>
+                        <a href="{{ route('dashboard') }}"><i
+                            class="fa fa-user"></i>{{ __('لوحة التحكم') }}</a>
+                    </div>
+                @endif
+                    <div>
+                        <a href="{{ route('logout') }}"><i
+                            class="fa fa-user"></i>{{ __('تسجيل الخروج') }}</a>
+                    </div>
+            @else
+                <span class="user" href="" id="user-open">حسابى</span>
+            @endauth
             <div class="icons-m">
                 <a href=""><i class="fa-brands fa-facebook-f"></i></a>
                 <a href=""><i class="fa-brands fa-instagram"></i></a>
@@ -131,12 +147,23 @@
             </li>
             <li><a href="{{ url('contact') }}">اتصل بينا</a></li>
             <li>
-                <a href=""><i class="fa-solid fa-heart heart"></i>التفضيلات </a>
+                <a  href=""><i class="fa-solid fa-heart heart"></i>التفضيلات </a>
             </li>
             <li>
-                <span id="btn-menu-user">
-                    <i class="fa-regular fa-user"></i>حسابى
+                @auth
+                <span >
+                    <a href="{{ route('logout') }}"><i
+                        class="fa fa-user"></i>{{ __('تسجيل الخروج') }}</a>
                 </span>
+                @else 
+
+                <span id="user-open">
+                    <a href="{{ url('login') }}">
+                        <i class="fa-regular fa-user"></i>حسابى
+                    </a>
+                </span>
+                {{-- <span class="user" href="" id="user-open">حسابى</span> --}}
+                @endauth
             </li>
         </ul>
     </div>
@@ -146,6 +173,7 @@
 @endphp --}}
     <!-- Start User menu -->
     <div class="user-account" id="user-account">
+
         <h4>
             تسجيل الدخول<span id="close-btn"><i class="fa-solid fa-xmark"></i>اغلق</span>
         </h4>
@@ -172,10 +200,10 @@
             <button>تسجيل الدخول</button>
             <div class="end">
                 <label for="remember">
-                    <input type="checkbox" name="remeber" id="remeber" />
+                    <input type="checkbox" id="save-pass" name="remember" {{ old('remember') ? 'checked' : '' }}>
                     تذكرني
                 </label>
-                <a href="#">نسيت كلمه السر؟</a>
+                <a href="{{url('password/reset')}}">نسيت كلمه السر؟</a>
             </div>
             <div class="new-user">
                 <i class="fa-regular fa-user"></i>
