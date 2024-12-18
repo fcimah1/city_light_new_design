@@ -221,6 +221,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <!-- Font Awesome Library -->
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" />
+    {{-- css for login and register pages --}}
+    <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
     <!-- Main Template css File -->
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
 

@@ -147,7 +147,7 @@
             </li>
             <li><a href="{{ url('contact') }}">اتصل بينا</a></li>
             <li>
-                <a href=""><i class="fa-solid fa-heart heart"></i>التفضيلات </a>
+                <a  href=""><i class="fa-solid fa-heart heart"></i>التفضيلات </a>
             </li>
             <li>
                 @auth
@@ -156,9 +156,13 @@
                         class="fa fa-user"></i>{{ __('تسجيل الخروج') }}</a>
                 </span>
                 @else 
-                <span id="btn-menu-user">
-                    <i class="fa-regular fa-user"></i>حسابى
+
+                <span id="user-open">
+                    <a href="{{ url('login') }}">
+                        <i class="fa-regular fa-user"></i>حسابى
+                    </a>
                 </span>
+                {{-- <span class="user" href="" id="user-open">حسابى</span> --}}
                 @endauth
             </li>
         </ul>

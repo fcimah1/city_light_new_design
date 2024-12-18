@@ -34,10 +34,10 @@ cartButton.addEventListener("click", () => {
   layer.classList.toggle("lay-show");
 });
 
-btnUserMenu.addEventListener("click", () => {
-  userMenu.classList.toggle("show");
-  mainMenu.classList.remove("show");
-});
+// btnUserMenu.addEventListener("click", () => {
+//   // userMenu.classList.toggle("show");
+//   mainMenu.classList.remove("show");
+// });
 
 window.addEventListener("scroll", () => {
   if (+window.scrollY > 0) {
