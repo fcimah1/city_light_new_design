@@ -92,6 +92,23 @@
                 <h4>تخفيضات</h4>
             </div>
             <div class="products">
+                @foreach ($news as $newProduct)
+                <div class="box">
+                    <div class="image">
+                        <img src="{{ asset('images/fe-1.jpg') }}" alt="" />
+                        <span class="discount"> -34%</span>
+                        <i class="fa-solid fa-heart heart"></i>
+                    </div>
+                    <p>{{ $newProduct->name }}</p>
+                    <p>
+                        <span class="total">
+                            <bdo dir="ltr">
+                                <span class="price"> {{ $newProduct->unit_price}} EGP</span> 
+                                <del>1,099 EGP</del></bdo></span>
+                    </p>
+                    <button>اضف الى السله</button>
+                </div>
+                @endforeach
                 <div class="box">
                     <div class="image">
                         <img src="{{ asset('images/fe-1.jpg') }}" alt="" />
