@@ -19,4 +19,23 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
+
+
+    public $design;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->design = env('design');
+
+    }
+
+    public function showLinkRequestForm()
+    {
+        return view($this->design.'.auth.passwords.email');
+    }
 }
