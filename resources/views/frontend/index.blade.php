@@ -7,24 +7,41 @@
             <div class="banner-cont">
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <a href="#"><img src="{{ asset('images/banner1.jpg') }}" alt="Image 1" /></a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#"><img src="{{ asset('images/banar-7.jpg') }}" alt="Image 2" /></a>
-                        </div>
-                        <div class="swiper-slide">
-                            <a href="#"><img src="{{ asset('images/banar3.jpg') }}" alt="Image 3" /></a>
-                        </div>
+                        @foreach ($sliders as $slider)
+                            <div class="swiper-slide">
+                                <a href="#">
+                                    <img src="{{ asset('images/banner1.jpg') }}" alt="Image 1" />
+                                    <img
+                                        src="{{asset('assets')}}/img/placeholder.jpg"
+                                        data-src="{{ uploaded_asset($slider->getTranslation('photo')) }}"
+                                        alt=" slider image "
+                                        onerror="this.onerror=null;this.src='{{asset('images/banner1.jpg')}}">
+                                </a>
+                            </div>
+                        @endforeach
+                       
                     </div>
                     <div class="swiper-pagination"></div>
                     <!-- Pagination -->
                 </div>
 
                 <div class="left-image">
-                    <a href="#"><img src="{{ asset('images/banar5.jpg') }}" alt="" /></a>
+                    @foreach ($ads as $key => $ad )
+                    @if ($key == 2)
+                    @break
+                    @else
+                        <a href="#">
+                            {{-- <a href="#"><img src="{{ uploaded_asset($ad->getTranslation('image')) }}" alt="" /></a> --}}
+                            <img 
+                                src="{{asset('assets')}}/img/placeholder.jpg"
+                                data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                                alt=" ad image {{$ad->getTranslation('name')}}"
+                                onerror="this.onerror=null;this.src='{{asset('images/banner1.jpg')}}">
+                            </a>
+                        @endif
+                    @endforeach
 
-                    <a href="#"><img src="{{ asset('images/banar-6.jpg') }}" alt="" /></a>
+                    {{-- <a href="#"><img src="{{ asset('images/banar-6.jpg') }}" alt="" /></a> --}}
                 </div>
             </div>
         </div>
@@ -70,11 +87,43 @@
     <div class="ads">
         <div class="container">
             <div class="right">
-                <img src="{{ asset('images/banar3.jpg') }}" alt="" />
-                <img src="{{ asset('images/banar5.jpg') }}" alt="" />
+                @foreach ($ads as $key => $ad )
+                    @if ($key == 2)
+                            <img 
+                            src="{{asset('assets')}}/img/placeholder.jpg"
+                            data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                            alt=" ad image {{$ad->getTranslation('name')}}"
+                            onerror="this.onerror=null;this.src='{{asset('images/banar3.jpg')}}">
+                    @endif
+                    @if ($key == 3)
+                            <img 
+                            src="{{asset('assets')}}/img/placeholder.jpg"
+                            data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                            alt=" ad image {{$ad->getTranslation('name')}}"
+                            onerror="this.onerror=null;this.src='{{asset('images/baner5.jpg')}}">
+                    @endif
+                @endforeach
+                {{-- <img src="{{ asset('images/banar3.jpg') }}" alt="" />
+                <img src="{{ asset('images/banar5.jpg') }}" alt="" /> --}}
             </div>
 
             <div class="left">
+                @foreach ($ads as $key => $ad )
+                    @if ($key == 4)
+                            <img 
+                            src="{{asset('assets')}}/img/placeholder.jpg"
+                            data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                            alt=" ad image {{$ad->getTranslation('name')}}"
+                            onerror="this.onerror=null;this.src='{{asset('images/banar3.jpg')}}">
+                    @endif
+                    @if ($key == 5)
+                            <img 
+                            src="{{asset('assets')}}/img/placeholder.jpg"
+                            data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                            alt=" ad image {{$ad->getTranslation('name')}}"
+                            onerror="this.onerror=null;this.src='{{asset('images/baner5.jpg')}}">
+                    @endif
+                @endforeach 
                 <img src="{{ asset('images/banar2.jpg') }}" alt="" />
                 <img src="{{ asset('images/banner1.jpg') }}" alt="" />
             </div>
@@ -92,19 +141,33 @@
                 <h4>تخفيضات</h4>
             </div>
             <div class="products">
-                @foreach ($news as $newProduct)
+                @foreach ($bests as $bestProduct)
                 <div class="box">
                     <div class="image">
-                        <img src="{{ asset('images/fe-1.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
+                        <img
+                            class="img-fit lazyload mx-auto h-310px h-md-310px"
+                            src="{{asset('assets')}}/img/placeholder.jpg"
+                            data-src="{{ uploaded_asset($bestProduct->thumbnail_img) }}"
+                            alt=" product image {{ $bestProduct->getTranslation('name') }}"
+                            onerror="this.onerror=null;this.src='{{asset('images/fe-1.jpg')}}">
+
+                        @if (discount_in_percentage($bestProduct) > 0)
+                            <span class="discount"> {{discount_in_percentage($bestProduct)}}%</span>
+                            <i class="fa-solid fa-heart heart"></i>
+                        @endif
                     </div>
-                    <p>{{ $newProduct->name }}</p>
+                    <p>{{ $bestProduct->getTranslation('name') }}</p>
                     <p>
                         <span class="total">
                             <bdo dir="ltr">
-                                <span class="price"> {{ $newProduct->unit_price}} EGP</span> 
-                                <del>1,099 EGP</del></bdo></span>
+                                @if (home_base_price($bestProduct) != home_discounted_base_price($bestProduct))
+                                    <span class="price"> {{ home_discounted_base_price($bestProduct) }} </span> 
+                                    <del>{{ home_base_price($bestProduct) }} </del>
+                                @else
+                                    <span class="price"> {{ home_base_price($bestProduct) }} </span> 
+                                @endif
+                                
+                            </bdo></span>
                     </p>
                     <button>اضف الى السله</button>
                 </div>
@@ -112,97 +175,6 @@
                 <div class="box">
                     <div class="image">
                         <img src="{{ asset('images/fe-1.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-2.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-3.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-1.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-2.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-3.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-2.jpg') }}" alt="" />
-                        <span class="discount"> -34%</span>
-                        <i class="fa-solid fa-heart heart"></i>
-                    </div>
-                    <p>أباجورة تيمورا 1 لمبة أسود</p>
-                    <p>
-                        <span class="total"><bdo dir="ltr"><span class="price"> 747 EGP</span> <del>1,099
-                                    EGP</del></bdo></span>
-                    </p>
-                    <button>اضف الى السله</button>
-                </div>
-                <div class="box">
-                    <div class="image">
-                        <img src="{{ asset('images/fe-3.jpg') }}" alt="" />
                         <span class="discount"> -34%</span>
                         <i class="fa-solid fa-heart heart"></i>
                     </div>
@@ -225,69 +197,20 @@
             <div class="content">
                 <div class="swiper-new-arrival">
                     <div class="swiper-wrapper">
+                        @foreach ($news as $newProduct)
                         <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="Image 1" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
+                                <div class="box">
+                                    <img
+                                        src="{{asset('assets')}}/img/placeholder.jpg"
+                                        data-src="{{ uploaded_asset($newProduct->thumbnail_img) }}"
+                                        alt=" product image {{ $newProduct->getTranslation('name') }}"
+                                        onerror="this.onerror=null;this.src='{{asset('images/new-3.jpg')}}">
+                                    <h4 dir="ltr">{{ $newProduct->getTranslation('name')}}</h4>
+                                    <button>اضف الى السله</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-1.png') }}" alt="Image 2" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-2.png') }}" alt="Image 3" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-4.png') }}" alt="Image 5" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-1.png') }}" alt="Image 1" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-2.png') }}" alt="Image 2" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="Image 3" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
+                            @endforeach
+        
                         <div class="swiper-slide">
                             <div class="box">
                                 <img src="{{ asset('images/new-5.png') }}" alt="Image 5" />
@@ -303,6 +226,15 @@
                 </div>
 
                 <div class="banner-new">
+                    @foreach ($ads as $key => $ad )
+                        @if ($key == 6)
+                                <img 
+                                src="{{asset('assets')}}/img/placeholder.jpg"
+                                data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                                alt=" ad image {{$ad->getTranslation('name')}}"
+                                onerror="this.onerror=null;this.src='{{asset('images/banar3.jpg')}}">
+                        @endif
+                    @endforeach
                     <img src="{{ asset('images/left-ads.png') }}" alt="" />
                 </div>
             </div>
@@ -316,81 +248,41 @@
             <h2>الاكتر مبيعا</h2>
             <div class="content">
                 <div class="banner-new">
+                    @foreach ($ads as $key => $ad )
+                        @if ($key == 7)
+                                <img 
+                                src="{{asset('assets')}}/img/placeholder.jpg"
+                                data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                                alt=" ad image {{$ad->getTranslation('name')}}"
+                                onerror="this.onerror=null;this.src='{{asset('images/banar3.jpg')}}">
+                        @endif
+                    @endforeach
                     <img src="{{ asset('images/left-ads.png') }}" alt="" />
                 </div>
 
                 <div class="swiper-new-arrival">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="Image 1" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
+                        @foreach ($productLevel as $levelProd)
+                            <div class="swiper-slide">
+                                <div class="box">
+                                    <img
+                                        src="{{asset('assets')}}/img/placeholder.jpg"
+                                        data-src="{{ uploaded_asset($levelProd->thumbnail_img) }}"
+                                        alt=" product image {{ $levelProd->getTranslation('name') }}"
+                                        onerror="this.onerror=null;this.src='{{asset('images/new-3.jpg')}}">
+                                    <h4 dir="ltr">{{ $levelProd->getTranslation('name')}}</h4>
+                                    <button type="button" onclick="addToCart()">اضف الى السله</button>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                         <div class="swiper-slide">
                             <div class="box">
                                 <img src="{{ asset('images/new-1.png') }}" alt="Image 2" />
                                 <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
+                                <button type="button" onclick="addToCart()">اضف الى السله</button>
                             </div>
                         </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-2.png') }}" alt="Image 3" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-4.png') }}" alt="Image 5" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-1.png') }}" alt="Image 1" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-2.png') }}" alt="Image 2" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="Image 3" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-3.png') }}" alt="" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/new-5.png') }}" alt="Image 5" />
-                                <h4><bdo dir="ltr">spot light</bdo></h4>
-                                <button>اضف الى السله</button>
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <!-- Navigation buttons -->
@@ -410,17 +302,19 @@
             <div class="content">
                 <div class="swiper-articles">
                     <div class="swiper-wrapper">
+                        @foreach ($blogs as $blog)
                         <div class="swiper-slide">
                             <div class="box">
-                                <img src="{{ asset('images/banner1.jpg') }}" alt="Image 1" />
-                                <h4>الاضاءه المناسبه للمذكره</h4>
-                                <p>
-                                    للإضاءة تأثير كبير على الدراسة والتحصيل، حيث أنها عامل مهم
-                                    للتركيز والفهم. ليس هذا فقط،
-                                </p>
-                                <p>اكمل القراءه</p>
+                                <img src="{{ static_asset('assets/img/placeholder-rect.jpg') }}"
+                                    data-src="{{ uploaded_asset($blog->banner) }}" alt="{{ $blog->title }}">
+
+                                <h4> <a href="{{ url('blog') . '/' . $blog->slug }}">{{ $blog->title }}</a></h4>
+                                <p>{{ $blog->short_description }} </p>
+
+                                <a href="{{ url('blog') . '/' . $blog->slug }}">اكمل القراءه</a>
                             </div>
                         </div>
+                        @endforeach
                         <div class="swiper-slide">
                             <div class="box">
                                 <img src="{{ asset('images/banar2.jpg') }}" alt="Image 2" />
@@ -432,50 +326,7 @@
                                 <p>اكمل القراءه</p>
                             </div>
                         </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/banar-8.jpg') }}" alt="Image 3" />
-                                <h4>الاضاءه المناسبه للمذكره</h4>
-                                <p>
-                                    للإضاءة تأثير كبير على الدراسة والتحصيل، حيث أنها عامل مهم
-                                    للتركيز والفهم. ليس هذا فقط،
-                                </p>
-                                <p>اكمل القراءه</p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/banner1.jpg') }}" alt="" />
-                                <h4>الاضاءه المناسبه للمذكره</h4>
-                                <p>
-                                    للإضاءة تأثير كبير على الدراسة والتحصيل، حيث أنها عامل مهم
-                                    للتركيز والفهم. ليس هذا فقط،
-                                </p>
-                                <p>اكمل القراءه</p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/banar5.jpg') }}" alt="Image 5" />
-                                <h4>الاضاءه المناسبه للمذكره</h4>
-                                <p>
-                                    للإضاءة تأثير كبير على الدراسة والتحصيل، حيث أنها عامل مهم
-                                    للتركيز والفهم. ليس هذا فقط،
-                                </p>
-                                <p>اكمل القراءه</p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="box">
-                                <img src="{{ asset('images/banner1.jpg') }}" alt="Image 1" />
-                                <h4>الاضاءه المناسبه للمذكره</h4>
-                                <p>
-                                    للإضاءة تأثير كبير على الدراسة والتحصيل، حيث أنها عامل مهم
-                                    للتركيز والفهم. ليس هذا فقط،
-                                </p>
-                                <p>اكمل القراءه</p>
-                            </div>
-                        </div>
+                        
                         <div class="swiper-slide">
                             <div class="box">
                                 <img src="{{ asset('images/banar2.jpg') }}" alt="Image 2" />
