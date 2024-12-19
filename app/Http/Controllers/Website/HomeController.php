@@ -70,7 +70,7 @@ class HomeController extends Controller
     //sliders depand on lang
     public function sliders()
     {
-        $sliders = Slider::where('published', '1')->get();
+        $sliders = Slider::where('published', '1')->limit(3)->get();
         return $sliders;
     }
 
@@ -156,13 +156,16 @@ class HomeController extends Controller
         $flash = last_flash();
         $cats =Category::with('subCategories')->get(); // edit by mohamed
 
-        $news    =   Product::where('featured',1)->limit(5)->get();
-        $bests   =   Product::where('best', 1)->limit(5)->get();
-        $hots    =   Product::where('todays_deal', 1)->limit(5)->get();
-
-        $blogs   =   Blog::orderBy('created_at', 'desc')->limit(3)->get();
-        $ads     =   $this->ads();
-        $sliders =   $this->sliders();
+        $news           =   Product::where('featured',1)->limit(5)->get();
+        $bests          =   Product::where('best', 1)->limit(5)->get();
+        $hots           =   Product::where('todays_deal', 1)->limit(5)->get();
+        $productLevel   =   Product::where('product_level','>', 0)
+                                    ->orderBy('product_level', 'asc')
+                                    ->orderBy('created_at', 'asc')
+                                    ->limit(5)->get();
+        $blogs          =   Blog::orderBy('created_at', 'desc')->limit(3)->get();
+        $ads            =   $this->ads();
+        $sliders        =   $this->sliders();
         $paymentMethods =   $this->getPaymentMethod();
         $shipping       =   $this->getShippingCompany();
         return view($this->design.'.index')
@@ -171,6 +174,7 @@ class HomeController extends Controller
             ->with('news',$news)
             ->with('bests',$bests)
             ->with('hots',$hots)
+            ->with('productLevel',$productLevel)
             ->with('blogs',$blogs)
             ->with('brands',$brands)
             ->with('sliders',$sliders)
