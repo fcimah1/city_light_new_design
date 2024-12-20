@@ -1,5 +1,7 @@
 @extends('frontend.layout')
-
+@php
+    $countOfAds = count($ads);
+@endphp
 @section('content')
     <!-- start banner section -->
     <section class="banner">
@@ -27,18 +29,23 @@
 
                 <div class="left-image">
                     @foreach ($ads as $key => $ad )
-                    @if ($key == 2)
-                    @break
-                    @else
+                    @if ($key == ($countOfAds-1))
                         <a href="#">
-                            {{-- <a href="#"><img src="{{ uploaded_asset($ad->getTranslation('image')) }}" alt="" /></a> --}}
                             <img 
                                 src="{{asset('assets')}}/img/placeholder.jpg"
                                 data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
                                 alt=" ad image {{$ad->getTranslation('name')}}"
                                 onerror="this.onerror=null;this.src='{{asset('images/banner1.jpg')}}">
-                            </a>
-                        @endif
+                        </a>
+                    @elseif($key == ($countOfAds-2))
+                        <a href="#">
+                            <img 
+                                src="{{asset('assets')}}/img/placeholder.jpg"
+                                data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
+                                alt=" ad image {{$ad->getTranslation('name')}}"
+                                onerror="this.onerror=null;this.src='{{asset('images/banner1.jpg')}}">
+                        </a>
+                    @endif
                     @endforeach
 
                     {{-- <a href="#"><img src="{{ asset('images/banar-6.jpg') }}" alt="" /></a> --}}
@@ -88,14 +95,14 @@
         <div class="container">
             <div class="right">
                 @foreach ($ads as $key => $ad )
-                    @if ($key == 2)
+                    @if ($key == ($countOfAds-3))
                             <img 
                             src="{{asset('assets')}}/img/placeholder.jpg"
                             data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
                             alt=" ad image {{$ad->getTranslation('name')}}"
                             onerror="this.onerror=null;this.src='{{asset('images/banar3.jpg')}}">
                     @endif
-                    @if ($key == 3)
+                    @if ($key == ($countOfAds-4))
                             <img 
                             src="{{asset('assets')}}/img/placeholder.jpg"
                             data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
@@ -109,14 +116,14 @@
 
             <div class="left">
                 @foreach ($ads as $key => $ad )
-                    @if ($key == 4)
+                    @if ($key == ($countOfAds - 5))
                             <img 
                             src="{{asset('assets')}}/img/placeholder.jpg"
                             data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
                             alt=" ad image {{$ad->getTranslation('name')}}"
                             onerror="this.onerror=null;this.src='{{asset('images/banar3.jpg')}}">
                     @endif
-                    @if ($key == 5)
+                    @if ($key == ($countOfAds - 6))
                             <img 
                             src="{{asset('assets')}}/img/placeholder.jpg"
                             data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
@@ -227,7 +234,7 @@
 
                 <div class="banner-new">
                     @foreach ($ads as $key => $ad )
-                        @if ($key == 6)
+                        @if ($key == ($countOfAds - 7))
                                 <img 
                                 src="{{asset('assets')}}/img/placeholder.jpg"
                                 data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
@@ -249,7 +256,7 @@
             <div class="content">
                 <div class="banner-new">
                     @foreach ($ads as $key => $ad )
-                        @if ($key == 7)
+                        @if ($key == ($countOfAds - 8))
                                 <img 
                                 src="{{asset('assets')}}/img/placeholder.jpg"
                                 data-src="{{ uploaded_asset($ad->getTranslation('banner')) }}"
@@ -271,7 +278,8 @@
                                         alt=" product image {{ $levelProd->getTranslation('name') }}"
                                         onerror="this.onerror=null;this.src='{{asset('images/new-3.jpg')}}">
                                     <h4 dir="ltr">{{ $levelProd->getTranslation('name')}}</h4>
-                                    <button type="button" onclick="addToCart()">اضف الى السله</button>
+                                    {{-- <a href="{{ route('product', $levelProd->slug) }}">اضف الى السله</a> --}}
+                                    <button type="button" onclick="{{ route('product', $levelProd->slug) }}">اضف الى السله</button>
                                 </div>
                             </div>
                         @endforeach
@@ -407,153 +415,160 @@
 
 @section('script')
 
-    <script src="{{ asset('new') }}/js/jquery-3.3.1.min.js"></script>
-    <script src="{{ asset('new') }}/js/bootstrap.min.js"></script>
-    <script src="{{ asset('new') }}/js/jquery-ui.min.js"></script>
-    <script src="{{ asset('new') }}/js/jquery.countdown.min.js"></script>
-    <script src="{{ asset('new') }}/js/jquery.nice-select.min.js"></script>
-    <script src="{{ asset('new') }}/js/jquery.zoom.min.js"></script>
-    <script src="{{ asset('new') }}/js/jquery.dd.min.js"></script>
-    <script src="{{ asset('new') }}/js/jquery.slicknav.js"></script>
-    <script src="{{ asset('new') }}/js/owl.carousel.min.js"></script>
-    <script src="{{ asset('new') }}/js/main.js"></script>
-    <script src="{{ static_asset('assets/js/vendors.js') }}"></script>
+<script src="{{ asset('new') }}/js/jquery-3.3.1.min.js"></script>
+<script src="{{ asset('new') }}/js/bootstrap.min.js"></script>
+<script src="{{ asset('new') }}/js/jquery-ui.min.js"></script>
+<script src="{{ asset('new') }}/js/jquery.countdown.min.js"></script>
+<script src="{{ asset('new') }}/js/jquery.nice-select.min.js"></script>
+<script src="{{ asset('new') }}/js/jquery.zoom.min.js"></script>
+<script src="{{ asset('new') }}/js/jquery.dd.min.js"></script>
+<script src="{{ asset('new') }}/js/jquery.slicknav.js"></script>
+<script src="{{ asset('new') }}/js/owl.carousel.min.js"></script>
+<script src="{{ asset('new') }}/js/main.js"></script>
+<script src="{{ static_asset('assets/js/vendors.js') }}"></script>
 
-    <script>
-        function showAddToCartModal(id) {
-            if (!$('#modal-size').hasClass('modal-lg')) {
-                $('#modal-size').addClass('modal-lg');
-            }
-            $('#addToCart-modal-body').html(null);
-            $('#addToCart').modal();
-            $('.c-preloader').show();
-            $.post('<?php echo e(route('cart.showCartModal')); ?>', {
-                _token: AIZ.data.csrf,
-                id: id
-            }, function(data) {
-                $('.c-preloader').hide();
-                $('#addToCart-modal-body').html(data);
-                AIZ.plugins.slickCarousel();
-                AIZ.plugins.zoom();
-                AIZ.extra.plusMinus();
-                getVariantPrice();
-            });
+<script>
+    function showAddToCartModal(id) {
+        if (!$('#modal-size').hasClass('modal-lg')) {
+            $('#modal-size').addClass('modal-lg');
         }
+        $('#addToCart-modal-body').html(null);
+        $('#addToCart').modal();
+        $('.c-preloader').show();
+        $.post('<?php echo e(route('cart.showCartModal')); ?>', {
+            _token: AIZ.data.csrf,
+            id: id
+        }, function(data) {
+            $('.c-preloader').hide();
+            $('#addToCart-modal-body').html(data);
+            AIZ.plugins.slickCarousel();
+            AIZ.plugins.zoom();
+            AIZ.extra.plusMinus();
+            getVariantPrice();
+        });
+    }
 
-        function getVariantPrice() {
-            if ($('#option-choice-form input[name=quantity]').val() > 0 && checkAddToCartValidity()) {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo e(route('products.variant_price')); ?>',
-                    data: $('#option-choice-form').serializeArray(),
-                    success: function(data) {
+    function getVariantPrice() {
+        if ($('#option-choice-form input[name=quantity]').val() > 0 && checkAddToCartValidity()) {
+            $.ajax({
+                type: "POST",
+                url: '<?php echo e(route('products.variant_price')); ?>',
+                data: $('#option-choice-form').serializeArray(),
+                success: function(data) {
 
-                        $('.product-gallery-thumb .carousel-box').each(function(i) {
-                            if ($(this).data('variation') && data.variation == $(this).data(
-                                'variation')) {
-                                $('.product-gallery-thumb').slick('slickGoTo', i);
-                            }
-                        })
-
-                        $('#option-choice-form #chosen_price_div').removeClass('d-none');
-                        $('#option-choice-form #chosen_price_div #chosen_price').html(data.price);
-                        $('#available-quantity').html(data.quantity);
-                        $('.input-number').prop('max', data.max_limit);
-                        if (parseInt(data.in_stock) == 0 && data.digital == 0) {
-                            $('.buy-now').addClass('d-none');
-                            $('.add-to-cart').addClass('d-none');
-                            $('.out-of-stock').removeClass('d-none');
-                        } else {
-                            $('.buy-now').removeClass('d-none');
-                            $('.add-to-cart').removeClass('d-none');
-                            $('.out-of-stock').addClass('d-none');
+                    $('.product-gallery-thumb .carousel-box').each(function(i) {
+                        if ($(this).data('variation') && data.variation == $(this).data(
+                            'variation')) {
+                            $('.product-gallery-thumb').slick('slickGoTo', i);
                         }
-                    }
-                });
-            }
-        }
+                    })
 
-        function addToCart() {
-
-            if (checkAddToCartValidity()) {
-                $('#addToCart').modal();
-                $('.c-preloader').show();
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo e(route('cart.addToCart')); ?>',
-                    data: $('#option-choice-form').serializeArray(),
-                    success: function(data) {
-
-                        $('#addToCart-modal-body').html(null);
-                        $('.c-preloader').hide();
-                        $('#modal-size').removeClass('modal-lg');
-                        $('#addToCart-modal-body').html(data.modal_view);
-                        AIZ.extra.plusMinus();
-                        updateNavCart(data.nav_cart_view, data.cart_count);
-                    }
-                });
-            } else {
-                AIZ.plugins.notify('warning', "<?php echo e(__('front.please choose all the options')); ?>");
-            }
-        }
-
-        function checkAddToCartValidity() {
-            var names = {};
-            $('#option-choice-form input:radio').each(function() { // find unique names
-                names[$(this).attr('name')] = true;
-            });
-            var count = 0;
-            $.each(names, function() { // then count them
-                count++;
-            });
-
-            if ($('#option-choice-form input:radio:checked').length == count) {
-                return true;
-            }
-
-            return false;
-        }
-
-        function addToWishList(id) {
-            @if (Auth::check() && (Auth::user()->user_type == 'customer' || Auth::user()->user_type == 'seller'))
-                $.post('{{ route('wishlists.store') }}', {
-                    _token: AIZ.data.csrf,
-                    id: id
-                }, function(data) {
-                    if (data != 0) {
-                        $('#wishlist').html(data);
-                        AIZ.plugins.notify('success', "{{ translate('Item has been added to wishlist') }}");
+                    $('#option-choice-form #chosen_price_div').removeClass('d-none');
+                    $('#option-choice-form #chosen_price_div #chosen_price').html(data.price);
+                    $('#available-quantity').html(data.quantity);
+                    $('.input-number').prop('max', data.max_limit);
+                    if (parseInt(data.in_stock) == 0 && data.digital == 0) {
+                        $('.buy-now').addClass('d-none');
+                        $('.add-to-cart').addClass('d-none');
+                        $('.out-of-stock').removeClass('d-none');
                     } else {
-                        AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
+                        $('.buy-now').removeClass('d-none');
+                        $('.add-to-cart').removeClass('d-none');
+                        $('.out-of-stock').addClass('d-none');
                     }
-                });
-            @else
-                AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
-            @endif
-        }
-    </script>
-
-
-    <script>
-        function updateBackgrounds() {
-            var screenWidth = window.innerWidth;
-
-            $('.set-bg').each(function() {
-                var defaultBg = $(this).data('setbg');
-                var mobileBg = $(this).data('setbg-mobile');
-
-                if (screenWidth <= 768 && mobileBg) {
-                    $(this).css('background-image', 'url(' + mobileBg + ')');
-                } else {
-                    $(this).css('background-image', 'url(' + defaultBg + ')');
                 }
             });
         }
+    }
 
-        // Initial call to set backgrounds based on screen size
-        updateBackgrounds();
 
-        // Update backgrounds on window resize
-        window.addEventListener('resize', updateBackgrounds);
-    </script>
+    
+    function addToCart() {
+        if (checkAddToCartValidity()) {
+            $('#addToCart').modal();
+            $('.c-preloader').show();
+            $.ajax({
+                type: "POST",
+                url: '<?php echo e(route('cart.addToCart')); ?>',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    $('#option-choice-form').serializeArray(),
+                    id: id
+                }
+                success: function(data) {
+
+                    $('#addToCart-modal-body').html(null);
+                    $('.c-preloader').hide();
+                    $('#modal-size').removeClass('modal-lg');
+                    $('#addToCart-modal-body').html(data.modal_view);
+                    AIZ.extra.plusMinus();
+                    updateNavCart(data.nav_cart_view, data.cart_count);
+                }
+            });
+        } else {
+            AIZ.plugins.notify('warning', "<?php echo e(__('front.please choose all the options')); ?>");
+        }
+    }
+
+    function checkAddToCartValidity() {
+        var names = {};
+        $('#option-choice-form input:radio').each(function() { // find unique names
+            names[$(this).attr('name')] = true;
+        });
+        var count = 0;
+        $.each(names, function() { // then count them
+            count++;
+        });
+
+        if ($('#option-choice-form input:radio:checked').length == count) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function addToWishList(id) {
+        @if (Auth::check() && (Auth::user()->user_type == 'customer' || Auth::user()->user_type == 'seller'))
+            $.post('{{ route('wishlists.store') }}', {
+                _token: AIZ.data.csrf,
+                id: id
+            }, function(data) {
+                if (data != 0) {
+                    $('#wishlist').html(data);
+                    AIZ.plugins.notify('success', "{{ translate('Item has been added to wishlist') }}");
+                } else {
+                    AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
+                }
+            });
+        @else
+            AIZ.plugins.notify('warning', "{{ translate('Please login first') }}");
+        @endif
+    }
+</script>
+
+
+<script>
+    function updateBackgrounds() {
+        var screenWidth = window.innerWidth;
+
+        $('.set-bg').each(function() {
+            var defaultBg = $(this).data('setbg');
+            var mobileBg = $(this).data('setbg-mobile');
+
+            if (screenWidth <= 768 && mobileBg) {
+                $(this).css('background-image', 'url(' + mobileBg + ')');
+            } else {
+                $(this).css('background-image', 'url(' + defaultBg + ')');
+            }
+        });
+    }
+
+    // Initial call to set backgrounds based on screen size
+    updateBackgrounds();
+
+    // Update backgrounds on window resize
+    window.addEventListener('resize', updateBackgrounds);
+</script>
 @endsection

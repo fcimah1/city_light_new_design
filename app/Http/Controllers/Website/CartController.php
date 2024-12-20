@@ -17,7 +17,7 @@ class CartController extends Controller
     public function __construct()
     {
 
-        $this->design = env('design');
+        $this->design = 'frontend';
     }
 
     public function index(Request $request)
