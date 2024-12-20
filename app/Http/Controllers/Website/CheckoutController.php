@@ -34,7 +34,7 @@ class CheckoutController extends Controller
     public function __construct()
     {
 
-        $this->design = env('design');
+        $this->design = 'frontend';
     }
 
     //check the selected payment gateway and redirect to that controller accordingly
