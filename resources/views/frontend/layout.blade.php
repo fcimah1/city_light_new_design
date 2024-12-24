@@ -245,7 +245,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />
     <!-- Swiper Library -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{{asset('css/swiper-bundle.min.css')}}">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" /> --}}
     <!-- Font Awesome Library -->
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" />
     {{-- css for login and register pages --}}
@@ -282,7 +283,8 @@
 
     @include('frontend.inc.footer')
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script> --}}
+    script src="{{ asset('js/swiper.js') }}"></script>
     <script src="java/main.js"></script>
 
 

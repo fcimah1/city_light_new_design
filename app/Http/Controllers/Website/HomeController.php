@@ -256,7 +256,7 @@ class HomeController extends Controller
         return view($this->design.'.my-account');
     }
     public function loginV(){
-        return view($this->design.'.auth.admin_login');
+        return view('auth.admin_login');
     }
 
     public function weOffer(){
@@ -278,10 +278,10 @@ class HomeController extends Controller
         if($user != null){
             if(Hash::check($request->password, $user->password)){
                 if($request->has('remember')){
-                    auth()->login($user, true);
+                    Auth::login($user, true);
                 }
                 else{
-                    auth()->login($user, false);
+                    Auth::login($user, false);
                 }
             }
             else {
@@ -304,9 +304,9 @@ class HomeController extends Controller
 
         if ($user != null) {
             // Try logging in with the given email and password
-            if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 // Check if the authenticated user is either 'admin' or 'staff'
-                if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff') {
+                if (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
                     // You can instantiate the repository if needed here
                     // CoreComponentRepository::instantiateShopRepository();
 
@@ -314,7 +314,7 @@ class HomeController extends Controller
                     return redirect()->route('admin.dashboard');
                 } else {
                     // If the user is not admin or staff, log them out and show an error message
-                    auth()->logout();
+                    Auth::logout();
                     flash(translate('Access Denied!'))->warning();
                     return back();
                 }
@@ -511,10 +511,10 @@ class HomeController extends Controller
         if($user != null){
             if(Hash::check($request->password, $user->password)){
                 if($request->has('remember')){
-                    auth()->login($user, true);
+                    Auth::login($user, true);
                 }
                 else{
-                    auth()->login($user, false);
+                    Auth::login($user, false);
                 }
             }
             else {
@@ -545,8 +545,8 @@ class HomeController extends Controller
 
                 $referred_by_user = User::where('referral_code', $request->product_referral_code)->first();
 
-                $affiliateController = new AffiliateController;
-                $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
+                // $affiliateController = new AffiliateController;
+                // $affiliateController->processAffiliateStats($referred_by_user->id, 1, 0, 0, 0);
             }
             if($detailedProduct->digital == 1){
                 return view($this->design.'.digital_product_details', compact('detailedProduct'));
@@ -619,7 +619,7 @@ class HomeController extends Controller
                 $user->new_email_verificiation_code = null;
                 $user->save();
 
-                auth()->login($user, true);
+                Auth::login($user, true);
 
                 flash(translate('Email Changed successfully'))->success();
                 return redirect()->route('dashboard');
@@ -653,9 +653,9 @@ class HomeController extends Controller
                 $user->email_verified_at = date('Y-m-d h:m:s');
                 $user->save();
                 event(new PasswordReset($user));
-                auth()->login($user, true);
+                Auth::login($user, true);
 
-                if(auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')
+                if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff')
                 {
                     return redirect()->route('admin.dashboard');
                 }
