@@ -26,7 +26,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AramexController;
 use App\Http\Controllers\TabbyController;
 use App\Http\Controllers\TamaraController;
+use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\AppLanguage;
+use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\RedirectBasedOnCountry;
 
 /*
@@ -47,7 +49,7 @@ Route::middleware([RedirectBasedOnCountry::class, AppLanguage::class])->group(fu
     });
     Route::get('/', [HomeController::class,'new'] )->name('home');
 
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'new'])->name('home');
     Route::get('/subCategories/{category_id}', [HomeController::class,'subCategories'])->name('home.subCategories');
      // Add other routes that should redirect based on country here
 
@@ -205,6 +207,8 @@ Route::get('/brand/{brand_slug}', [SearchController::class,'listingByBrand'])->n
 Route::get('/product/{slug}', [HomeController::class,'product'])->name('product');
 Route::post('/product/variant_price',  [HomeController::class,'variant_price'])->name('products.variant_price');
 
+Route::get('/admin', [AdminController::class,'admin_dashboard'])->name('admin.dashboard')
+->middleware([AdminAuthenticate::class, IsAdmin::class]);
 
 Route::get('/cart', [CartController::class,'index'])->name('cart');
 Route::post('/cart/show-cart-modal', [CartController::class,'showCartModal'])->name('cart.showCartModal');
@@ -289,6 +293,3 @@ Route::get('/{slug}', [HomeController::class ,'show_custom_page'])->name('custom
 
 
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -51,6 +51,8 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ShippingCompanyController;
 use App\Http\Controllers\Admin\SocialMediaController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Middleware\AdminAuthenticate;
+use App\Http\Middleware\IsAdmin;
 
  Route::get('/cache-cache', [AdminController::class,'clearCache'])->name('cache.clear');
 
@@ -62,8 +64,8 @@ Route::post('/admin/login',  [HomeController::class,'adminLogin'])->name('admin.
 
 Route::get('/admin', [AdminController::class,'admin_dashboard'])
     ->name('admin.dashboard')
-    ->middleware(['admin_auth', 'admin']);
-Route::group(['prefix' => 'admin', 'middleware' => ['admin_auth', 'admin']], function() {
+    ->middleware([AdminAuthenticate::class, 'admin']);
+Route::group(['prefix' => 'admin', 'middleware' => [AdminAuthenticate::class, IsAdmin::class]], function() {
     //Update Routes
 
     Route::resource('categories', '\App\Http\Controllers\Admin\CategoryController');

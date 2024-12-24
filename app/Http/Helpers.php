@@ -848,9 +848,9 @@ if (!function_exists('calculateCommissionAffilationClubPoint')) {
     {
         (new CommissionController)->calculateCommission($order);
 
-        if (addon_is_activated('affiliate_system')) {
-            (new AffiliateController)->processAffiliatePoints($order);
-        }
+        // if (addon_is_activated('affiliate_system')) {
+        //     (new AffiliateController)->processAffiliatePoints($order);
+        // }
 
         if (addon_is_activated('club_point')) {
             if ($order->user != null) {

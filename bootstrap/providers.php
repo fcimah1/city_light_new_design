@@ -1,6 +1,7 @@
 <?php
 
 return [
+    Intervention\Image\ImageServiceProvider::class,
     App\Providers\AliasServiceProvider::class,
     App\Providers\AppServiceProvider::class,
     Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,
