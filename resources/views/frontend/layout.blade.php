@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
 @if (str_replace('_', '-', app()->getLocale()) == 'ar')
     <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -20,17 +21,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ getBaseURL() }}">
     <meta name="file-base-url" content="{{ getFileBaseURL() }}">
-       <!-- Favicon -->
-       <link rel="icon" href="{{ asset('imager') }}/favicon.ico">
-    <!-- Favicon -->
-    <link rel="icon" href="{{ asset('fav.jpg') }}">
-
 
     {{--    end edit --}}
 
 
-
-
+    <link rel="shortcut icon" href="{{ asset('images/logo-removebg-preview.png') }}" type="image/x-icon" />
 
     <title>{{ Route::currentRouteName() }} | @yield('meta_title', get_setting('website_name') . ' | ' . get_setting('site_motto'))</title>
 
@@ -54,7 +49,8 @@
         <meta name="twitter:site" content="@publisher_handle">
         <meta name="twitter:title" content="{{ get_setting('meta_title') }}">
         <meta name="twitter:description" content="{{ get_setting('meta_description') }}">
-        <meta name="twitter:creator" content="@author_handle">
+        <meta name="twitter:creator"
+            content="@author_handle">
         <meta name="twitter:image" content="{{ uploaded_asset(get_setting('meta_image')) }}">
 
         <!-- Open Graph data -->
@@ -68,7 +64,7 @@
     @endif
 
     <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
-    <link rel="stylesheet" href="{{ asset('new/css/style.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('new/css/style.css') }}"> --}}
 
     <script>
         var AIZ = AIZ || {};
@@ -98,7 +94,7 @@
 
     @yield('style')
 
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
 
     @if (env('mode') == 'live' && env('APP_NAME') == 'tendy stuff shop')
         <!-- Meta Pixel Code -->
@@ -236,23 +232,21 @@
                 ttq.page();
             }(window, document, 'ttq');
         </script>
-        <!-- TikTok Pixel Code End -->
-    @endif
-    <link rel="shortcut
- icon" href="{{ asset('images/logo-removebg-preview.png') }}" type="image/x-icon" />
+        <!-- TikTok Pixel Code End --> @endif
     <!-- Google fonts cairo -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />
-    <!-- Swiper Library -->
-    <link rel="stylesheet" href="{{asset('css/swiper-bundle.min.css')}}">
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" /> --}}
-    <!-- Font Awesome Library -->
-    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" />
-    {{-- css for login and register pages --}}
-    <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
-    <!-- Main Template css File -->
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+    <link rel="preconnect"
+            href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />
+        <!-- Swiper Library -->
+        {{-- <link rel="stylesheet" href="{{asset('css/swiper-bundle.min.css')}}"> --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+        <!-- Font Awesome Library -->
+        <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" />
+        {{-- css for login and register pages --}}
+        <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
+        <!-- Main Template css File -->
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
 
 </head>
 
@@ -283,9 +277,11 @@
 
     @include('frontend.inc.footer')
 
-    {{-- <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script> --}}
-    script src="{{ asset('js/swiper.js') }}"></script>
-    <script src="java/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    {{-- <script src="{{ asset('js/swiper.js') }}"></script> --}}
+    <script src="{{ asset('js/main.js') }}"></script>
+    {{-- <script src="{{ asset('js/cat.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/details.js') }}"></script> --}}
 
 
 </body>

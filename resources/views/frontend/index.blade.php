@@ -64,7 +64,7 @@
             <div class="all">
                 @foreach ($cats as $cat)
                     <div class="box">
-                        <a href="#"><img src="{{ uploaded_asset($cat->icon) }}" alt="{{ $cat->name }}" />
+                        <a href="{{route('products.category', $cat->slug)}}"><img src="{{ uploaded_asset($cat->icon) }}" alt="{{ $cat->name }}" />
                             <h3>{{ __($cat->name) }}</h3>
                         </a>
                     </div>
@@ -160,8 +160,10 @@
 
                         @if (discount_in_percentage($bestProduct) > 0)
                             <span class="discount"> {{discount_in_percentage($bestProduct)}}%</span>
-                            <i class="fa-solid fa-heart heart"></i>
                         @endif
+                        <i class="fa-solid fa-heart heart"></i>
+                        <i class="fa-solid fa-magnifying-glass quick-look"></i>
+          
                     </div>
                     <p>{{ $bestProduct->getTranslation('name') }}</p>
                     <p>
@@ -184,6 +186,8 @@
                         <img src="{{ asset('images/fe-1.jpg') }}" alt="" />
                         <span class="discount"> -34%</span>
                         <i class="fa-solid fa-heart heart"></i>
+                        <i class="fa-solid fa-magnifying-glass quick-look"></i>
+          
                     </div>
                     <p>أباجورة تيمورا 1 لمبة أسود</p>
                     <p>
@@ -196,6 +200,50 @@
         </div>
     </div>
     <!-- End features -->
+
+        <!-- Start Popup details -->
+        <div class="popup-container" id="popup-quick">
+            <div id="layer-popup" class="layer"></div>
+            <div class="popup">
+              <div class="images">
+                <img src="{{asset('images/1090010001151009-1.jpg')}}" alt="" />
+                <button>view details</button>
+              </div>
+              <div class="details">
+                <h4>ثريا بومب 16 لمبة ذهبي</h4>
+                <img src="{{asset('images/dlight.png')}}" alt="brand-image" />
+                <div class="rating">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+      
+                  <i class="fa-regular fa-star"></i>
+                  <p>( <span>1</span>تقييم العملاء )</p>
+                </div>
+                <div class="price">
+                  <p><del>817 ر.س</del> <span>480 ر.س</span></p>
+                </div>
+                <ul class="features-prod">
+                  <li>ضمان سنة من سيتى لايت ضد عيوب الصناعة.</li>
+                  <li>استرجاع مجاني خلال ١٤ يوم من تاريخ الاستلام.</li>
+                  <li>سعر المنتج لا يشمل اللمبات.</li>
+                </ul>
+      
+                <div class="availability"><i class="fa-solid fa-check"></i>متوفر</div>
+      
+                <div class="amount">
+                  <div class="counter">
+                    <button id="popup-decrement">-</button>
+                    <p id="popup-count">1</p>
+                    <button id="popup-increment">+</button>
+                  </div>
+                  <button>اضف الى السله</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Popup details -->
 
     <!-- Start New Arrival -->
     <div class="arrival">
