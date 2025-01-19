@@ -27,15 +27,15 @@ class AppLanguage
         else{
             $locale = 'en';
         }
-
-
+        // Session::put('locale', $locale);
+        
         if(config('local.status')){
             if (Session::has('locale')  &&array_key_exists( Session::get('locale'),config('local.langauges') ) ) {
                 \Illuminate\Support\Facades\App::setLocale(Session::get('locale'));
             }
         }
-
-
+        
+        
         // set laravel localization
         App::setLocale($locale);
 

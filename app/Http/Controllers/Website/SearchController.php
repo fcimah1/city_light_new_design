@@ -15,6 +15,7 @@ use App\Models\Color;
 use App\Models\Shop;
 use App\Models\Attribute;
 use App\Models\AttributeCategory;
+use App\Models\Seller;
 use App\Utility\CategoryUtility;
 
 class SearchController extends Controller
@@ -28,9 +29,10 @@ class SearchController extends Controller
 
     public function index(Request $request, $category_id = null, $brand_id = null)
     {
-
+// dd($request->all());
         $pagination = isset($request->pagination)?$request->pagination:12;
         $query = $request->keyword;
+        $brand_slug = $request->brand;
         $sort_by = $request->sort_by;
         $filter_by = $request->filter_by;
         $min_price = null;
@@ -81,6 +83,19 @@ class SearchController extends Controller
             $products->where('unit_price', '>=', $min_price)->where('unit_price', '<=', $max_price);
         }
 
+        if($brand_slug != null){
+            // $searchController = new SearchController;
+            // $searchController->store($request);
+            Brand::where(function ($q) use ($query){
+                foreach (explode(' ', trim($query)) as $word) {
+                    $q->where('name', 'like', '%'.$word.'%')->
+                    orWhere('slug', 'like', '%'.$word.'%')
+                        ->orWhereHas('brand_translations', function($q) use ($word){
+                        $q->where('name', 'like', '%'.$word.'%');
+                    });
+                }
+            });
+        }
 
 
         if($query != null){
@@ -110,6 +125,12 @@ class SearchController extends Controller
                 break;
             case 'price-desc':
                 $products->orderBy('unit_price', 'desc');
+                break;
+            case 'best-seller':
+                $products->where('best', 1);
+                break;
+            case 'best-review':
+                $products->orderBy('rating', 'desc');
                 break;
             default:
                 $products->orderBy('id', 'desc');

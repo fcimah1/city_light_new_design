@@ -13,14 +13,14 @@ use Storage;
 
 class LanguageController extends Controller
 {
-    public function changeLanguage(Request $request)
+    public function changeLanguage(Request $request, $locale)
     {
-        dd($request->locale);
-    	$request->session()->put('locale', $request->locale);
-//        dd($request->locale);
-        $language = Language::where('code', $request->locale)->first();
+    	$request->session()->put('locale', $locale);
+        $language = Language::where('code', $locale)->first();
 
-    	flash(__('front.Language changed to '))->success();
+    	flash(__('front.Language changed to '.$language->name))->success();
+        // dd($request->session()->get('locale', $locale));
+        // return redirect()->back();
     }
 
     public function index(Request $request)

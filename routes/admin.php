@@ -293,10 +293,10 @@ Route::group(['prefix' => 'admin', 'middleware' => [AdminAuthenticate::class, Is
     Route::resource('addons', '\App\Http\Controllers\Admin\AddonController');
     Route::post('/addons/activation', [AddonController::class,'ctivation'])->name('addons.activation');
 
-    Route::get('/customer-bulk-upload/index', [CustomerBulkUploadController::class,'index'])->name('customer_bulk_upload.index');
-    Route::post('/bulk-user-upload', [CustomerBulkUploadController::class,'user_bulk_upload'])->name('bulk_user_upload');
-    Route::post('/bulk-customer-upload', [CustomerBulkUploadController::class,'customer_bulk_file'])->name('bulk_customer_upload');
-    Route::get('/user', [CustomerBulkUploadController::class,'pdf_download_user'])->name('pdf.download_user');
+    // Route::get('/customer-bulk-upload/index', [CustomerBulkUploadController::class,'index'])->name('customer_bulk_upload.index');
+    // Route::post('/bulk-user-upload', [CustomerBulkUploadController::class,'user_bulk_upload'])->name('bulk_user_upload');
+    // Route::post('/bulk-customer-upload', [CustomerBulkUploadController::class,'customer_bulk_file'])->name('bulk_customer_upload');
+    // Route::get('/user', [CustomerBulkUploadController::class,'pdf_download_user'])->name('pdf.download_user');
     //Customer Package
 
     Route::resource('customer_packages', '\App\Http\Controllers\Admin\CustomerPackageController');

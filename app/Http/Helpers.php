@@ -407,6 +407,50 @@ if (!function_exists('home_discounted_base_price_by_stock_id')) {
     }
 }
 
+//create method to get count of items in cart
+if(!function_exists('count_items')){
+    function count_items(){
+        $cart = [];
+        $count = 0;
+        if (Auth::user() != null) {
+            $user_id = Auth::user()->id;
+            $cart = \App\Models\Cart::where('user_id', $user_id)->get();
+        } else {
+        $temp_user_id = Session()->get('temp_user_id');
+            if ($temp_user_id) {
+                $cart = \App\Models\Cart::where('temp_user_id', $temp_user_id)->get();
+            }
+        }
+        if(isset($cart) && !empty($cart)) {
+            $count = count($cart);
+        }
+        return $count;
+    }
+}
+
+// function to return total of cart price
+if(!function_exists('cart_total')){
+    function cart_total(){
+        $total = 0;
+        $cart = null;
+        if (Auth::user() != null) {
+            $user_id = Auth::user()->id;
+            $cart = \App\Models\Cart::where('user_id', $user_id)->get();
+            } else {
+                $temp_user_id = Session()->get('temp_user_id');
+                if ($temp_user_id) {
+                    $cart = \App\Models\Cart::where('temp_user_id', $temp_user_id)->get();
+                }
+            }
+            if(isset($cart) && count($cart) > 0) {
+                foreach ($cart as $item) {
+                    $total += $item->price * $item->quantity;
+                }
+            }
+            return $total;
+    }
+}
+
 //Shows Base Price with discount
 if (!function_exists('home_discounted_base_price')) {
     function home_discounted_base_price($product, $formatted = true,$symbol=true)

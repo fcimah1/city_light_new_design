@@ -10,7 +10,7 @@
                     <a href="{{ route('admin.dashboard') }}"><i class="fa fa-user"></i>{{ __('لوحة التحكم') }}</a>
                 @else
                     <div>
-                        <a href="{{ route('dashboard') }}"><i class="fa fa-user"></i>{{ __('لوحة التحكم') }}</a>
+                        <a href="{{ route('user') }}"><i class="fa fa-user"></i>{{ __('لوحة التحكم') }}</a>
                     </div>
                 @endif
                 <div>
@@ -26,55 +26,83 @@
             </div>
         </div>
     </div>
-
     <div class="container">
         <div class="header-top">
-            <div class="icons">
-                <div class="cart" id="cart">
-                    <span> <span class="price">
-                            @php
-                                $total = 0;
-                                if (isset($cart) && count($cart) > 0) {
-                                    foreach ($cart as $key => $cartItem) {
-                                        $total = $total + $cartItem['price'] * $cartItem['quantity'];
-                                    }
-                                    echo $total;
-                                } else {
-                                    echo $total;
-                                }
-                            @endphp
-                        </span> ر.س</span>
-                    <span class="top" count="{{ isset($cart) && count($cart) > 0 ? count($cart) : 0 }}">
-                        <i class="fa-solid fa-cart-shopping"></i></span>
-                </div>
+            @include('frontend.partials.cart_wishlist')
 
-                <a href="{{ Auth::check() ? route('wishlists.index') : '#' }}" class="top"
-                    count="{{ Auth::check() ? count(Auth::user()->wishlists) : 0 }}">
-                    <i class="fa-solid fa-heart heart">
-                    </i>
-                </a>
+            <div class="flex-grow-1 front-header-search d-flex align-items-center bg-white">
+
+                <div class="position-relative flex-grow-1">
+                    <form method="get" action="{{ url('search') }}" class="stop-propagation">
+
+                        <div class="d-flex position-relative align-items-center">
+                            <div class="d-lg-none" data-toggle="class-toggle" data-target=".front-header-search">
+                                <button class="btn px-2" type="button"><i
+                                        class="la la-2x la-long-arrow-left"></i></button>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" class="border-0 border-lg form-control" id="search"
+                                    name="search"
+                                    @isset($query)
+                                value="{{ $query }}"
+                                       @endisset
+                                    placeholder="{{ __('front.i am shopping for...') }}" autocomplete="off">
+                                <div class="input-group-append d-none_important d-lg-block">
+                                    <button class="btn btn-primary search" type="submit">
+                                        <i class="la la-search la-flip-horizontal fs-18" style="color: white;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="typed-search-box  stop-propagation document-click-d-none d-none  bg-white rounded shadow-lg position-absolute left-0 top-100 w-100"
+                        style="min-height: 200px;z-index: 300;">
+                        <div class="search-preloader absolute-top-center">
+                            <div class="dot-loader">
+                                <div>
+
+                                </div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="search-nothing d-none p-3 text-center fs-16">
+
+                        </div>
+                        <div id="search-content" class="text-left">
+
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="ابحث عن المنتجات...." />
-            </div>
+
+
             <div class="language">
+
                 <a class="holder" id="lang-active">
-                    <img src="{{asset('images/Flag_of_Saudi_Arabia.svg-150x150.png')}}" alt="" />
+                    <img src="{{ asset('images/Flag_of_Saudi_Arabia.svg-150x150.png') }}" alt="" />
                     <p>السعودية</p>
                     <i class="fa-solid fa-chevron-down"></i>
                 </a>
+
+
                 <div class="box">
-                    <a class="lang" id="lang-en">
-                        <img src="{{asset('images/en.png')}}" alt="" />
+                    {{-- {{ route('language.change', 'en') }} --}}
+                    <a href="#" class="lang" value="en" id="lang-en">
+                        <img src="{{ asset('images/en.png') }}" alt="" />
                         <p>ENGLISH</p>
                     </a>
-                    <a class="lang" id="lang-ar">
-                        <img src="{{asset('images/Flag_of_Saudi_Arabia.svg-150x150.png')}}" alt="" />
+                    {{-- {{ route('language.change', 'ar') }} --}}
+                    <a href="#" class="lang" value="ar" id="lang-ar">
+                        <img src="{{ asset('images/Flag_of_Saudi_Arabia.svg-150x150.png') }}" alt="" />
                         <p>السعودية</p>
                     </a>
                 </div>
             </div>
+
+
+
             <div class="log">
                 <a href="{{ url('/') }}">
                     <img src="{{ asset('images/logo-removebg-preview.png') }}" alt="logo photo" />
@@ -97,7 +125,8 @@
                             @foreach ($cat->subCategories as $subCategory)
                                 <li>
                                     <a href="">
-                                        <img src="{{ uploaded_asset($subCategory->icon) }}" alt="photo" />
+                                        <img src="{{ uploaded_asset($subCategory->icon) }}" alt="photo"
+                                            style="width: 100px; padding: 10px;" />
                                         {{ $subCategory->name }}
                                     </a>
                                 </li>
@@ -107,17 +136,29 @@
                 @endforeach
             </ul>
             <div class="search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="ابحث عن المنتجات...." />
+                <form method="get" action="{{ url('search') }}" class="stop-propagation">
+                    <input type="text" class="border-0 border-lg form-control" id="search" name="search"
+                        @isset($query)
+                            value="{{ $query }}"
+                        @endisset
+                        placeholder="{{ __('front.i am shopping for...') }}" autocomplete="off">
+                </form>
             </div>
         </div>
     </div>
     <!-- Start main menu -->
     <div class="main-menu">
         <div class="search">
-            <input type="text" placeholder="ابحث عن منتجات..." />
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <form method="get" action="{{ url('search') }}">
+                <input type="text" class="border-0 border-lg form-control" id="search" name="search"
+                    @isset($query)
+                value="{{ $query }}"
+                @endisset
+                    placeholder="{{ __('front.i am shopping for...') }}" autocomplete="off">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </form>
         </div>
+
         <ul>
             <li><a href="{{ url('/') }}">الرئيسية</a></li>
             <li><a href="">احدث المنتجات</a></li>
@@ -210,20 +251,20 @@
     <!-- End User menu -->
 
     <!-- Start cart menu -->
-    <div class="user-cart" id="user-cart">
+    {{-- <div class="dropdown-menu dropdown-menu-lg p-0 stop-propagation dropdown-menu-custom"> --}}
+    <div class="user-cart" id="cart_items">
         <h4>
             سلة المشتريات<span id="close-btn-cart"><i class="fa-solid fa-xmark"></i>اغلق</span>
         </h4>
+        @include('frontend.partials.cart')
+    </div>
+    {{-- </div> --}}
+
+    <div class="user-cart" id="cart_items">
+
         @if (isset($cart) && count($cart) > 0)
 
-            {{--        old --}}
-            <div class="p-3 fs-15 fw-600 border-bottom">
-                {{ __('front.cart items') }}
-            </div>
             <ul class="h-250px overflow-auto c-scrollbar-light list-group list-group-flush">
-                @php
-                    $total = 0;
-                @endphp
                 @foreach ($cart as $key => $cartItem)
                     @php
                         $product_image = null;
@@ -265,16 +306,11 @@
             <div class="px-3 py-2 fs-15 border-top d-flex justify-content-between">
                 <span class="opacity-60">{{ __('front.subtotal') }}</span>
                 <span class="fw-600">{{ single_price($total) }}</span>
-
-
             </div>
             <div class="px-3 py-2 text-center border-top">
                 <p>Tax & customs fees included</p>
             </div>
             <div class="px-3 py-2 text-center border-top">
-
-
-
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item">
                         <a href="{{ route('cart') }}" class="btn btn-soft-primary btn-sm" style="color: white">
@@ -291,19 +327,18 @@
                     @endif
                 </ul>
             </div>
-            {{--  end old --}}
         @else
             <div class="content">
                 <p>لا يوجد منتجات فى سله المشتريات</p>
                 <button id="btn-cart-back">العوده للتسوق</button>
             </div>
         @endif
-
-
-
     </div>
 
     <!-- End cart menu -->
+
+
+
 
     <!-- layer to hidden content behind the meun -->
     <div id="layer" class="layer"></div>

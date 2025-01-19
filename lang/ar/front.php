@@ -26,7 +26,7 @@ return [
     'Your message'=>'رسالتك',
     'Send message'=>'إرسال الرسالة',
     'All departments'=>'كل الاصناف',
-
+    'You must be logged in to post a review' => ' يجب ان تسجل الدخول لكى تضيف تعليق',
 //----------------------------------------------------------
     'Order has been deleted successfully'=>'تم حذف الطلب بنجاح',
     'Stripe'=>'Stripe',

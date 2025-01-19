@@ -46,7 +46,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
         'cors' => [
-            \Barryvdh\Cors\HandleCors::class,
+            // \Barryvdh\Cors\HandleCors::class,
         ],
     ];
 
@@ -68,14 +68,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-
-
-
-
-
-
-
         'app_language' => \App\Http\Middleware\AppLanguage::class,
         'admin' => \App\Http\Middleware\IsAdmin::class,
         'seller' => \App\Http\Middleware\IsSeller::class,

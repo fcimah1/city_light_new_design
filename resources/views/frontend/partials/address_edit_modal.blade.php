@@ -46,20 +46,20 @@
             </div>
         </div>
 
-{{--        <div class="row">--}}
-{{--            <div class="col-md-2">--}}
-{{--                <label>{{ __('front.City') }}</label>--}}
-{{--            </div>--}}
-{{--            <div class="col-md-10">--}}
-{{--                <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="city_id">--}}
-{{--                    @foreach ($cities as $key => $city)--}}
-{{--                        <option value="{{ $city->id }}" @if ($address_data->city_id == $city->id) selected @endif>--}}
-{{--                            {{ $city->name }}--}}
-{{--                        </option>--}}
-{{--                    @endforeach--}}
-{{--                </select>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        <div class="row">
+            <div class="col-md-2">
+                <label>{{ __('front.City') }}</label>
+            </div>
+            <div class="col-md-10">
+                <select class="form-control mb-3 aiz-selectpicker" data-live-search="true" name="city_id">
+                    @foreach ($cities as $key => $city)
+                        <option value="{{ $city->id }}" @if ($address_data->city_id == $city->id) selected @endif>
+                            {{ $city->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
         {{-- @if (get_setting('google_map') == 1)
             <div class="row">
@@ -92,15 +92,14 @@
             </div>
         @endif --}}
 
-{{--         <div class="row">--}}
-{{--            <div class="col-md-2">--}}
-{{--                <label>{{ __('front.Postal code')}}</label>--}}
-{{--            </div>--}}
-{{--            <div class="col-md-10">--}}
-{{--                <input type="text" class="form-control mb-3" placeholder="{{ __('front.Your Postal Code')}}" value="{{ $address_data->postal_code }}" name="postal_code" value="" required>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
+        {{-- <div class="row">
+            <div class="col-md-2">
+                <label>{{ __('front.Postal code')}}</label>
+            </div>
+            <div class="col-md-10">
+                <input type="text" class="form-control mb-3" placeholder="{{ __('front.Your Postal Code')}}" value="{{ $address_data->postal_code }}" name="postal_code" value="" required>
+            </div>
+        </div> --}}
         <div class="row">
             <div class="col-md-2">
                 <label>{{ __('front.Phone') }}</label>

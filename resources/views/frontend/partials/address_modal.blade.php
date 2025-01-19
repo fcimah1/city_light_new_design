@@ -144,8 +144,8 @@
     </div>
 </div>
 
-@section('panel_script')
-    <script type="text/javascript">
+{{-- @section('panel_script') --}}
+    {{-- <script type="text/javascript">
         function add_new_address() {
             $('#new-address-modal').modal('show');
         }
@@ -266,7 +266,7 @@
 
     @if (get_setting('google_map') == 1)
 
-        @include('new.partials.google_map')
+        @include('frontend.partials.google_map')
 
-    @endif
-@endsection
+    @endif --}}
+{{-- @endsection --}}

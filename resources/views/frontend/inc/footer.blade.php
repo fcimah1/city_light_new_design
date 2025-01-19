@@ -28,6 +28,7 @@
         </div>
     </div>
     <!-- End footer -->
+
     <script type="text/javascript" src="{{ static_asset('asset/js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ static_asset('asset/js/jquery.flexslider-min.js') }}"></script>
     <script type="text/javascript" src="{{ static_asset('asset/js/owl.carousel.js') }}"></script>
@@ -48,24 +49,150 @@
 
 
 
-    <script>
-        if ($('#lang-change').length > 0) {
-            $('#lang-change .dropdown-menu a').each(function() {
-                $(this).on('click', function(e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    var locale = $this.data('flag');
-                    console.log(locale);
-                    $.get('{{ route('language.change') }}', {
-                        _token: AIZ.data.csrf,
-                        locale: locale
-                    }, function(data) {
-                        location.reload();
-                    });
+<script type="text/javascript">
+    function add_new_address() {
+        $('#new-address-modal').modal('show');
+    }
+    
+    function edit_address(address) {
+        var url = '{{ route('addresses.edit', ':id') }}';
+        url = url.replace(':id', address);
 
-                });
-            });
-        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: url,
+            type: 'GET',
+            success: function(response) {
+                $('#edit_modal_body').html(response.html);
+                $('#edit-address-modal').modal('show');
+                AIZ.plugins.bootstrapSelect('refresh');
+
+                @if (get_setting('google_map') == 1)
+                    var lat = -33.8688;
+                    var long = 151.2195;
+
+                    if(response.data.address_data.latitude && response.data.address_data.longitude) {
+                    lat = response.data.address_data.latitude;
+                    long = response.data.address_data.longitude;
+                    }
+
+                    initialize(lat, long, 'edit_');
+                @endif
+            },
+            error: function(error) {
+
+                // add_new_address
+
+                console.log(error);
+            }
+
+        });
+    }
+
+    $(document).on('change', '[name=country_id]', function() {
+        var country_id = $(this).val();
+        get_states(country_id);
+    });
+
+    $(document).on('change', '[name=state_id]', function() {
+        var state_id = $(this).val();
+        get_city(state_id);
+    });
+
+    function get_states(country_id) {
+        $('[name="state"]').html("");
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{ route('get-state') }}",
+            type: 'POST',
+            data: {
+                country_id: country_id
+            },
+            success: function(response) {
+                var obj = JSON.parse(response);
+                if (obj != '') {
+                    $('[name="state_id"]').html(obj);
+                    AIZ.plugins.bootstrapSelect('refresh');
+                }
+            }
+        });
+    }
+
+    function get_city(state_id) {
+        $('[name="city"]').html("");
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{ route('get-city') }}",
+            type: 'POST',
+            data: {
+                state_id: state_id
+            },
+            success: function(response) {
+                var obj = JSON.parse(response);
+                if (obj != '') {
+                    $('[name="city_id"]').html(obj);
+                    AIZ.plugins.bootstrapSelect('refresh');
+                }
+            }
+        });
+    }
+</script>
+
+
+
+<script type="text/javascript">
+
+    $('.new-email-verification').on('click', function() {
+        console.log('new-email-verification');
+        $(this).find('.loading').removeClass('d-none');
+        $(this).find('.default').addClass('d-none');
+        var email = $("input[name=email]").val();
+
+        $.post('{{ route('user.new.verify') }}', {_token:'{{ csrf_token() }}', email: email}, function(data){
+            data = JSON.parse(data);
+            $('.default').removeClass('d-none');
+            $('.loading').addClass('d-none');
+            if(data.status == 2)
+                AIZ.plugins.notify('warning', data.message);
+            else if(data.status == 1)
+                AIZ.plugins.notify('success', data.message);
+            else
+                AIZ.plugins.notify('danger', data.message);
+        });
+    });
+</script>
+
+@if (get_setting('google_map') == 1)
+
+    @include('frontend.partials.google_map')
+
+@endif
+
+
+    <script>
+        // if ($('#lang-change').length > 0) {
+        //     $('#lang-change .dropdown-menu a').each(function() {
+        //         $(this).on('click', function(e) {
+        //             e.preventDefault();
+        //             var $this = $(this);
+        //             var locale = $this.data('flag');
+        //             console.log(locale);
+        //             $.get('{{ route('language.change') }}', {
+        //                 _token: AIZ.data.csrf,
+        //                 locale: locale
+        //             }, function(data) {
+        //                 location.reload();
+        //             });
+
+        //         });
+        //     });
+        // }
 
         function show_purchase_history_details(order_id) {
             $('#order-details-modal-body').html(null);
@@ -104,6 +231,7 @@
                 AIZ.plugins.zoom();
                 AIZ.extra.plusMinus();
                 getVariantPrice();
+                
             });
         }
 
@@ -143,6 +271,7 @@
                         $('#option-choice-form #chosen_price_div #chosen_price').html(data.price);
                         $('#available-quantity').html(data.quantity);
                         $('.input-number').prop('max', data.max_limit);
+                        
                         if (parseInt(data.in_stock) == 0 && data.digital == 0) {
                             $('.buy-now').addClass('d-none');
                             $('.add-to-cart').addClass('d-none');
@@ -173,7 +302,9 @@
                         $('#modal-size').removeClass('modal-lg');
                         $('#addToCart-modal-body').html(data.modal_view);
                         AIZ.extra.plusMinus();
+                        
                         updateNavCart(data.nav_cart_view, data.cart_count);
+                        // window.location.replace("{{ route('cart') }}");
                     }
                 });
             } else {
@@ -182,7 +313,7 @@
         }
 
         function updateNavCart(view, count) {
-            $('.cart-count').html(count);
+            updateNavbarCounts();
             $('#cart_items').html(view);
         }
 
@@ -200,7 +331,7 @@
 
                             $('#addToCart-modal-body').html(data.modal_view);
                             updateNavCart(data.nav_cart_view, data.cart_count);
-
+                            
                             window.location.replace("{{ route('cart') }}");
                         } else {
                             $('#addToCart-modal-body').html(null);
@@ -220,6 +351,7 @@
                 _token: AIZ.data.csrf,
                 id: key
             }, function(data) {
+                
                 updateNavCart(data.nav_cart_view, data.cart_count);
                 $('#cart-summary').html(data.cart_view);
                 AIZ.plugins.notify('success', "{{ __('front.item has been removed from cart') }}");
@@ -248,7 +380,7 @@
                     search: searchKey
                 }, function(data) {
                     if (data == '0') {
-                        // $('.typed-search-box').addClass('d-none');
+                        $('.typed-search-box').addClass('d-none');
                         $('#search-content').html(null);
                         $('.typed-search-box .search-nothing').removeClass('d-none').html(
                             '{{ __('front.sorry, nothing found for') }}  <strong>"' + searchKey + '"</strong>');
@@ -266,6 +398,41 @@
             }
         }
     </script>
+
+    
+<script>
+    function updateNavbarCounts() {
+        $.ajax({
+            url: '{{ route('navbar.data') }}', // Create a route to fetch data
+            method: 'GET',
+            success: function (data) {
+                $('#cart_count').text(data.cartCount);
+                $('#cart-total').text(data.totalCart);
+                $('#wishlist-count').text(data.wishlistCount);
+            }
+        });
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+    <script src="{{asset('new')}}/js/jquery-3.3.1.min.js"></script>
+    <script src="{{asset('new')}}/js/bootstrap.min.js"></script>
+    <script src="{{asset('new')}}/js/jquery-ui.min.js"></script>
+    <script src="{{asset('new')}}/js/jquery.countdown.min.js"></script>
+    <script src="{{asset('new')}}/js/jquery.nice-select.min.js"></script>
+    <script src="{{asset('new')}}/js/jquery.zoom.min.js"></script>
+    <script src="{{asset('new')}}/js/jquery.dd.min.js"></script>
+    <script src="{{asset('new')}}/js/jquery.slicknav.js"></script>
+    <script src="{{asset('new')}}/js/owl.carousel.min.js"></script>
+    <script src="{{asset('new')}}/js/main.js"></script>
 
 
 
