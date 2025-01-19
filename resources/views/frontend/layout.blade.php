@@ -25,7 +25,7 @@
     {{--    end edit --}}
 
 
-    <link rel="shortcut icon" href="{{ asset('images/logo-removebg-preview.png') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('images/logo-removebg-preview.png') }}" type="image/x-icon" />
 
     <title>{{ Route::currentRouteName() }} | @yield('meta_title', get_setting('website_name') . ' | ' . get_setting('site_motto'))</title>
 
@@ -62,10 +62,7 @@
         <meta property="og:site_name" content="{{ env('APP_NAME') }}" />
         <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
     @endif
-
-    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('new/css/style.css') }}"> --}}
-
+ 
     <script>
         var AIZ = AIZ || {};
         AIZ.local = {
@@ -93,10 +90,15 @@
     </script>
 
     @yield('style')
+    <link rel= "stylesheet" href= "https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css" >    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    <link rel="stylesheet" href="{{asset('css/vendors.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    {{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/aiz-core.css') }}">
+    <link rel="stylesheet" href="{{ asset('new/css/style.css') }}">
 
-    @if (env('mode') == 'live' && env('APP_NAME') == 'tendy stuff shop')
+
+    @if (env('mode') == 'live' && env('APP_NAME') == 'City Light Store')
         <!-- Meta Pixel Code -->
         <script>
             ! function(f, b, e, v, n, t, s) {
@@ -241,6 +243,9 @@
         <!-- Swiper Library -->
         {{-- <link rel="stylesheet" href="{{asset('css/swiper-bundle.min.css')}}"> --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('asset') }}/css/slick.css" />
+        <link rel="stylesheet" type="text/css" href="{{ asset('asset') }}/css/slick-theme.css" />
+        {{-- <link rel="stylesheet" type="text/css" href="{{ asset('asset') }}/css/index-style.css"> --}}
         <!-- Font Awesome Library -->
         <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" />
         {{-- css for login and register pages --}}
@@ -267,21 +272,35 @@
 
 
 
-    {{-- model login --}}
-    {{-- @include('new.partials.model_login') --}}
-    {{-- end model login --}}
+  
+
+
+    <div class="modal fade" id="addToCart">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size"
+            role="document">
+            <div class="modal-content position-relative">
+                <div class="c-preloader text-center p-3">
+                    <i class="las la-spinner la-spin la-3x"></i>
+                </div>
+                <button type="button" class="close absolute-top-right btn-icon close z-1" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true" class="la-2x">&times;</span>
+                </button>
+                <div id="addToCart-modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     @yield('modal')
 
 
 
     @include('frontend.inc.footer')
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-    {{-- <script src="{{ asset('js/swiper.js') }}"></script> --}}
     <script src="{{ asset('js/main.js') }}"></script>
-    {{-- <script src="{{ asset('js/cat.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/details.js') }}"></script> --}}
 
 
 </body>

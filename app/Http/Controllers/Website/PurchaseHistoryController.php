@@ -17,7 +17,7 @@ class PurchaseHistoryController extends Controller
     public function __construct()
     {
 
-        $this->design = env('design');
+        $this->design = 'frontend';
     }
 
     /**

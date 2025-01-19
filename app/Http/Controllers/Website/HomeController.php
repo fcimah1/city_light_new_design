@@ -216,7 +216,7 @@ class HomeController extends Controller
             return view($this->design.'.user.customer.dashboard');
         }
         elseif(Auth::user()->user_type == 'delivery_boy'){
-            return view('delivery_boys.frontend.dashboard');
+            return view('firontend.delivery_boys.frontend.dashboard');
         }
         else {
             abort(404);
@@ -692,6 +692,39 @@ class HomeController extends Controller
             ->paginate(15);
 
         return view($this->design.'.flash_deal.all_flash_deal_list', $data);
+    }
+
+    public function get_count_of_cart_and_wishlist() {
+        $totalCart = 0;
+        $cartCount = 0;
+        $wishlistCount = 0;
+        $cart = [];
+        if (Auth::user() != null) {
+            $user_id = Auth::user()->id;
+            $cart = \App\Models\Cart::where('user_id', $user_id)->get();
+        } else {
+        $temp_user_id = Session()->get('temp_user_id');
+            if ($temp_user_id) {
+                $cart = \App\Models\Cart::where('temp_user_id', $temp_user_id)->get();
+            }
+        }
+        if (isset($cart) && count($cart) > 0) {
+            foreach ($cart as $key => $cartItem) {
+                $totalCart = $totalCart + $cartItem['price'] * $cartItem['quantity'];
+            }
+        }
+        if(isset($cart) && count($cart) > 0){
+            $cartCount = count($cart);
+        }
+
+        if(Auth::check()){
+            $wishlistCount = \App\Models\Wishlist::where('user_id', Auth::id())->count();
+        }
+        return response()->json([
+            'totalCart' => $totalCart,
+            'cartCount' => $cartCount,
+            'wishlistCount' => $wishlistCount,
+        ]);
     }
 
 }

@@ -3,6 +3,8 @@ const layer = document.getElementById("layer");
 const btnToggle = document.getElementById("btn-toggle");
 const closeUserMenuBtn = document.getElementById("close-btn");
 const userOpenBtn = document.getElementById("user-open");
+const userLogin = document.getElementById("user-login");
+const userLoginDetails = document.getElementById("user-login_details");
 const userMenu = document.getElementById("user-account");
 
 const btnCountryShow = document.getElementsByClassName("country")[0];
@@ -19,7 +21,7 @@ const cartButton = document.getElementById("cart");
 const cartClose = document.getElementById("close-btn-cart");
 const cartBack = document.getElementById("btn-cart-back");
 
-const cartMenu = document.getElementById("user-cart");
+const cartMenu = document.getElementById("cart_items");
 
 const btnLangEn = document.getElementById("lang-en");
 const btnLangAr = document.getElementById("lang-ar");
@@ -55,15 +57,15 @@ btnLangAr.addEventListener("click", () => {
 });
 
 cartClose.addEventListener("click", () => {
-  cartMenu.classList.toggle("show");
+  cartMenu.classList.toggle("show-with-transform");
   layer.classList.toggle("lay-show");
 });
 cartBack.addEventListener("click", () => {
-  cartMenu.classList.toggle("show");
+  cartMenu.classList.toggle("show-with-transform");
   layer.classList.toggle("lay-show");
 });
 cartButton.addEventListener("click", () => {
-  cartMenu.classList.toggle("show");
+  cartMenu.classList.toggle("show-with-transform");
   layer.classList.toggle("lay-show");
 });
 
@@ -87,27 +89,63 @@ btnCountryShow.addEventListener("click", () => {
   );
 });
 
+
+function initializeScripts() {
+  // Rebind event listeners or reinitialize plugins
+  $('.tooltip').tooltip(); // Example for a Bootstrap tooltip
+  $('user-login_details').on('click', function() {
+      userMenu.classList.toggle("show-with-transform");
+      layer.classList.toggle("lay-show");
+      console.log('Button clicked');
+  });
+
+  layer.addEventListener("click", () => {
+      layer.classList.toggle("lay-show");
+      userMenu.classList.remove("show-with-transform");
+  });
+}
+
 btnToggle.addEventListener("click", () => {
-  mainMenu.classList.toggle("show");
+  mainMenu.classList.toggle("show-with-transform");
   layer.classList.toggle("lay-show");
 });
 
 layer.addEventListener("click", () => {
   layer.classList.toggle("lay-show");
-  mainMenu.classList.remove("show");
-  userMenu.classList.remove("show");
-  cartMenu.classList.remove("show");
+  mainMenu.classList.remove("show-with-transform");
+  userMenu.classList.remove("show-with-transform");
+  cartMenu.classList.remove("show-with-transform");
 });
 
 userOpenBtn.addEventListener("click", () => {
-  console.log("hello");
-  userMenu.classList.toggle("show");
+  userMenu.classList.toggle("show-with-transform");
   layer.classList.toggle("lay-show");
 });
 
-closeUserMenuBtn.addEventListener("click", () => {
-  userMenu.classList.toggle("show");
+userLogin.addEventListener("click", () => {
+  userMenu.classList.toggle("show-with-transform");
   layer.classList.toggle("lay-show");
+});
+
+// userLoginDetails.addEventListener("click", () => {
+//   console.log('gggggggg');
+//   userMenu.classList.toggle("show");
+//   layer.classList.toggle("lay-show");
+// });
+
+closeUserMenuBtn.addEventListener("click", () => {
+  userMenu.classList.toggle("show-with-transform");
+  layer.classList.toggle("lay-show");
+});
+
+
+const currentPhoto = document.getElementById("current_image")
+const collectionPhotos = document.querySelectorAll(".products-details .images .all-images .carousel-box img")
+
+collectionPhotos.forEach((element) => {
+  element.addEventListener("click", () => {
+    currentPhoto.src = element.src
+  })
 });
 
 // initialize  the swiper
@@ -186,55 +224,55 @@ function initialzeSwiper() {
 
 initialzeSwiper();
 
-// two button in popup
+// // two button in popup
 
-const btnDecrement = document.getElementById("popup-decrement");
-const btnIncrement = document.getElementById("popup-increment");
+// // const btnDecrement = document.getElementById("popup-decrement");
+// // const btnIncrement = document.getElementById("popup-increment");
 
-const popup = document.getElementById("popup-quick");
-const popupCount = document.getElementById("popup-count");
+// const popup = document.getElementById("popup-quick");
+// // const popupCount = document.getElementById("popup-count");
 
 
-const allBtnsQuickLook = document.getElementsByClassName("quick-look");
+// const allBtnsQuickLook = document.getElementsByClassName("quick-look");
 
-const layerPopup = document.getElementById("layer-popup");
+// // const layerPopup = document.getElementById("layer-popup");
 
-btnDecrement.addEventListener("click", () => {
-  let count = parseInt(popupCount.textContent);
-  if (count > 1) {
-    count--;
-    popupCount.textContent = count;
-  }
-});
-btnIncrement.addEventListener("click", () => {
-  let count = parseInt(popupCount.textContent);
-  count++;
-  popupCount.innerText = count;
-});
+// // btnDecrement.addEventListener("click", () => {
+// //   let count = parseInt(popupCount.textContent);
+// //   if (count > 1) {
+// //     count--;
+// //     popupCount.textContent = count;
+// //   }
+// // });
+// // btnIncrement.addEventListener("click", () => {
+// //   let count = parseInt(popupCount.textContent);
+// //   count++;
+// //   popupCount.innerText = count;
+// // });
 
-[...allBtnsQuickLook].forEach((ele) => {
-  ele.addEventListener("click", () => {
-    popup.classList.add("popup-container-show");
-    layerPopup.classList.add("lay-show");
-  });
-});
+// [...allBtnsQuickLook].forEach((ele) => {
+//   ele.addEventListener("click", () => {
+//     popup.classList.add("popup-container-show");
+//     layerPopup.classList.add("lay-show");
+//   });
+// });
 
-layerPopup.addEventListener("click", () => {
-  popup.classList.remove("popup-container-show");
-  layerPopup.classList.remove("lay-show");
-});
+// layerPopup.addEventListener("click", () => {
+//   popup.classList.remove("popup-container-show");
+//   layerPopup.classList.remove("lay-show");
+// });
 
-const btnGridFour = document.getElementById("btn-grid-4");
-const btnGridThree = document.getElementById("btn-grid-3");
+// const btnGridFour = document.getElementById("btn-grid-4");
+// const btnGridThree = document.getElementById("btn-grid-3");
 
-const productShowInMainCat = document.getElementById("product-cat");
+// const productShowInMainCat = document.getElementById("product-cat");
 
-btnGridFour.addEventListener("click", () => {
-  productShowInMainCat.classList.add("products-4");
-});
-btnGridThree.addEventListener("click", () => {
-  productShowInMainCat.classList.remove("products-4");
-});
+// btnGridFour.addEventListener("click", () => {
+//   productShowInMainCat.classList.add("products-4");
+// });
+// btnGridThree.addEventListener("click", () => {
+//   productShowInMainCat.classList.remove("products-4");
+// });
 
 // category slider price
 
@@ -299,3 +337,5 @@ closeBtn.addEventListener("click", () => {
   filterMenu.classList.remove("popup-container-show");
   filterLayer.classList.remove("lay-show");
 });
+
+

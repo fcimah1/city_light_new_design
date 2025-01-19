@@ -5,20 +5,13 @@ use App\Http\Controllers\Controller;
 
 use App\Http\Controllers\Auth\RegisterController;
 
-use App\Http\Controllers\TabbyController;
-use App\Services\TabbyService;
-use App\Utility\PayfastUtility;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Category;
 use App\Models\Cart;
 use App\Http\Controllers\PaypalController;
-use App\Http\Controllers\InstamojoController;
 use App\Http\Controllers\StripePaymentController;
-use App\Http\Controllers\PublicSslCommerzPaymentController;
 use App\Http\Controllers\Website\OrderController;
-use App\Http\Controllers\PaytmController;
-use App\Http\Controllers\TamaraController;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\CouponUsage;
@@ -131,7 +124,6 @@ class CheckoutController extends Controller
 
     public function get_shipping_info(Request $request)
     {
-
         if(Auth::check()) {
             $carts = Cart::where('user_id', Auth::user()->id)->get();
         }else{
@@ -141,15 +133,17 @@ class CheckoutController extends Controller
         }//        if (Session::has('cart') && count(Session::get('cart')) > 0) {
         if ($carts && count($carts) > 0) {
             $categories = Category::all();
-            return view('front.shipping_info', compact('categories', 'carts'));
+            return view('frontend.shipping_info', compact('categories', 'carts'));
         }
         flash(__('front.Your cart is empty'))->success();
         return back();
     }
 
-    public function store_shipping_info(int $address_id)
+    public function store_shipping_info(Request $request)
     {
-        if ($address_id == null) {
+        // dd($request->address_id);
+
+        if ($request->address_id == null) {
             flash(translate("Please add shipping address"))->warning();
             return back();
         }
@@ -157,11 +151,11 @@ class CheckoutController extends Controller
         $carts = Cart::where('user_id', Auth::user()->id)->get();
 
         foreach ($carts as $key => $cartItem) {
-            $cartItem->address_id = $address_id;
+            $cartItem->address_id = $request->address_id;
             $cartItem->save();
         }
 
-        return $carts;
+        return view($this->design.'.delivery_info', compact('carts'));
     }
 
 

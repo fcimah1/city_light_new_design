@@ -12,18 +12,40 @@ use Cookie;
 
 class CartController extends Controller
 {
-
     private  $design;
     public function __construct()
     {
-
         $this->design = 'frontend';
+    }
+
+    public function getCartTotal()
+    {
+        $total = 0;
+        $count = 0;
+        $cart = [];
+        if (Auth::user() != null) {
+            $user_id = Auth::user()->id;
+            $cart = \App\Models\Cart::where('user_id', $user_id)->get();
+        } else {
+        $temp_user_id = Session()->get('temp_user_id');
+            if ($temp_user_id) {
+                $cart = \App\Models\Cart::where('temp_user_id', $temp_user_id)->get();
+            }
+        }
+        if (isset($cart) && count($cart) > 0) {
+            foreach ($cart as $key => $cartItem) {
+                $total = $total + $cartItem['price'] * $cartItem['quantity'];
+            }
+        }
+        if(isset($cart) && count($cart) > 0)
+            $count = count($cart);
+        return response()->json(['total' => $total, 'count' => $count]);
     }
 
     public function index(Request $request)
     {
         $categories = Category::all();
-        if(auth()->user() != null) {
+        if(Auth::user() != null) {
             $user_id = Auth::user()->id;
             if($request->session()->get('temp_user_id')) {
                 Cart::where('temp_user_id', $request->session()->get('temp_user_id'))
@@ -65,7 +87,7 @@ class CartController extends Controller
         $carts = array();
         $data = array();
 
-        if(auth()->user() != null) {
+        if(Auth::user() != null) {
             $user_id = Auth::user()->id;
             $data['user_id'] = $user_id;
             $carts = Cart::where('user_id', $user_id)->get();
@@ -233,7 +255,7 @@ class CartController extends Controller
                 Cart::create($data);
             }
 
-            if(auth()->user() != null) {
+            if(Auth::user() != null) {
                 $user_id = Auth::user()->id;
                 $carts = Cart::where('user_id', $user_id)->get();
             } else {
@@ -271,7 +293,7 @@ class CartController extends Controller
             if(count($carts) == 0){
                 Cart::create($data);
             }
-            if(auth()->user() != null) {
+            if(Auth::user() != null) {
                 $user_id = Auth::user()->id;
                 $carts = Cart::where('user_id', $user_id)->get();
             } else {
@@ -292,7 +314,7 @@ class CartController extends Controller
     public function removeFromCart(Request $request)
     {
         Cart::destroy($request->id);
-        if(auth()->user() != null) {
+        if(Auth::user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
         } else {
@@ -334,7 +356,7 @@ class CartController extends Controller
             $cartItem->save();
         }
 
-        if(auth()->user() != null) {
+        if(Auth::user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
         } else {
@@ -352,7 +374,7 @@ class CartController extends Controller
     //get cart count
     public function cartCount()
     {
-        if(auth()->user() != null) {
+        if(Auth::user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
         } else {
@@ -369,7 +391,7 @@ class CartController extends Controller
     public function cartTotal()
     {
         $total = 0;
-        if (auth()->user() != null) {
+        if (Auth::user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
         } else {
